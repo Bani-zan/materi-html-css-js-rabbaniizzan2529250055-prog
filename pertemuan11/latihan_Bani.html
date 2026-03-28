@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Product Rendering</title>
+    <style>
+        .product-card { border: 1px solid #ddd; padding: 16px; margin: 12px; border-radius: 8px; }
+        .discount-badge { background: #ff4444; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
+        .original-price { text-decoration: line-through; color: #888; margin-right: 8px; }
+        .current-price { font-size: 20px; font-weight: bold; color: #2d5a27; }
+        .buy-btn { background: #28a745; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        .buy-btn:disabled { background: #6c757d; cursor: not-allowed; }
+        .out-of-stock { background: #dc3545; }
+    </style>
+</head>
+<body>
+    <div id="product-container"></div>
+
+    <script>
+        // DATA SOURCE
+        const products = [
+            {
+                id: 1,
+                nama: "Sofa Minimalis Biru",
+                harga: 3200000,
+                diskon: 4500000,
+                kategori: "Ruang Tamu",
+                stok: 5,
+                
+            },
+            {
+                id: 2,
+                nama: "Meja Makan Kayu Jati",
+                harga: 2500000,
+                diskon: 0,
+                kategori: "Ruang Makan",
+                stok: 0,
+               
+            },
+            {
+                id: 3,
+                nama: "Kompor Gas 2 Tungku",
+                harga: 850000,
+                diskon: 1200000,
+                kategori: "Dapur",
+                stok: 12,
+                
+            }
+        ];
+
+        // 7. 🔄 LIFECYCLE: DOM Ready → Render
+        document.addEventListener("DOMContentLoaded", renderProducts);
+
+        
+        function renderProducts() {
+            
+            const container = document.getElementById('product-container');
+            container.innerHTML = ""; // 🧹 Prevent duplication
+
+            
+            products.forEach(product => {
+                
+                let badgeHTML = "";
+                let priceHTML = "";
+
+                // 💰 Discount Logic
+                if (product.diskon > 0) {
+                    badgeHTML = `<span class="discount-badge">DISKON!</span>`;
+                    const originalPrice = product.diskon.toLocaleString('id-ID');
+                    const currentPrice = product.harga.toLocaleString('id-ID');
+                    priceHTML = `
+                        <span class="original-price">Rp ${originalPrice}</span>
+                        <span class="current-price">Rp ${currentPrice}</span>
+                    `;
+                } else {
+                    priceHTML = `<span class="current-price">Rp ${product.harga.toLocaleString('id-ID')}</span>`;
+                }
+
+                // 🛒 Stock Logic
+                let buyButtonHTML = "";
+                if (product.stok > 0) {
+                    buyButtonHTML = `
+                        <button class="buy-btn" onclick="beliProduk(${product.id}, '${product.nama}')">
+                            Beli Sekarang (${product.stok} tersedia)
+                        </button>
+                    `;
+                } else {
+                    buyButtonHTML = `
+                        <button class="buy-btn out-of-stock" disabled>Stok Habis</button>
+                    `;
+                }
+
+                
+                const productHTML = `
+                    <div class="product-card">
+                        <img src="${product.gambar}" alt="${product.nama}" style="width:100%; height:200px; object-fit:cover;">
+                        <h3>${product.nama}</h3>
+                        <p><strong>Kategori:</strong> ${product.kategori}</p>
+                        <div class="price-section">
+                            ${badgeHTML}
+                            ${priceHTML}
+                        </div>
+                        ${buyButtonHTML}
+                    </div>
+                `;
+
+                
+                container.innerHTML += productHTML;
+            });
+        }
+
+        
+        function beliProduk(id, nama) {
+            alert(`✅ Terima kasih! Anda telah membeli "${nama}" (ID: ${id})`);
+        }
+
+        
+        function filterByKategori(kategori) {
+            
+            renderProducts(); // Re-render with filtered data
+        }
+    </script>
+</body>
+</html>
