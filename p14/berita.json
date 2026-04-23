@@ -1,0 +1,17 @@
+[
+  {
+    "gambar": "galeri/berita1.webp",
+    "judul": "Berita 1",
+    "deskripsi": "Ini adalah deskripsi berita pertama."
+  },
+  {
+    "gambar": "galeri/berita2.webp", 
+    "judul": "Berita 2",
+    "deskripsi": "Ini adalah deskripsi berita kedua."
+  },
+  {
+    "gambar": "galeri/berita2.webp", 
+    "judul": "Berita 2",
+    "deskripsi": "Ini adalah deskripsi berita kedua."
+  }
+]
